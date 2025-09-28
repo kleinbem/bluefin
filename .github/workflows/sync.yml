@@ -1,0 +1,26 @@
+name: Sync upstream
+
+on:
+  schedule:
+    - cron: "0 3 * * *"
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Sync fork from ublue-os/bluefin
+        uses: tgymnich/fork-sync@v1
+        with:
+          owner: ublue-os
+          repo: bluefin
+          base: main
+          head: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+          merge_method: merge
+          auto_merge: true
+          retries: 4
+          retry_after: 60
